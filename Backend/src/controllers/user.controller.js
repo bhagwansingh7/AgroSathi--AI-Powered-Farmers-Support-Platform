@@ -1,3 +1,4 @@
+const cookie = require('cookie-parser')
 const { registerUser, loginUser } =require("../models/user.model")
 
 
@@ -24,16 +25,24 @@ const registeruser=async(req,res)=>{
 const loginuser=async(req,res)=>{
     const userdata=req.body
     try {
-        const rows=await loginUser(userdata)
-        if(rows.length===0){
+        const result=await loginUser(userdata)
+        if(result.length===0){
             res.status(401).json({
                 message:'user not found',
                 
         })
         }
+        res.cookie('token', result.token, {
+            httpOnly: true,
+            sameSite: 'lax',
+            secure: false
+        });
+
+
+
         res.status(201).json({
             message:'user login successfully',
-            rows
+            result
         })       
     } catch (error) {
         res.status(401).json({

@@ -1,5 +1,7 @@
 const pool=require('../config/db')
 const bcrypt=require('bcrypt')
+const jwt=require('jsonwebtoken')
+const cookie=require('cookie-parser')
 //register a user
 const registerUser=async(userdata)=>{
     console.log(userdata)
@@ -34,8 +36,18 @@ const loginUser=async(userdata)=>{
         if(!verifyUser){
             return 'user not found'
         }
-
-        return user
+        const token=jwt.sign({
+            id:user.id,
+            email:user.email,
+            role:user.role
+        },
+        process.env.JWT_SECRET
+        ,{
+            expiresIn: '3d'
+        })
+        return {
+            token
+        }
     } catch (error) {
         throw error
     }
