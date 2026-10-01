@@ -16,8 +16,9 @@ const isAuth = async (req, res, next) => {
             token,
             process.env.JWT_SECRET
         );
-
+        // console.log("verify isAuth",verify)
         req.user = verify;
+        // console.log(req.user)
         next();
 
     } catch (error) {

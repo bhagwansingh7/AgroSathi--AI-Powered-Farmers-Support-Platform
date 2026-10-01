@@ -27,7 +27,7 @@ const loginuser=async(req,res)=>{
     try {
         const result=await loginUser(userdata)
         if(result.length===0){
-            res.status(401).json({
+           return res.status(401).json({
                 message:'user not found',
                 
         })
@@ -51,5 +51,14 @@ const loginuser=async(req,res)=>{
         })       
     }
 }
-
-module.exports={registeruser,loginuser}
+const getCurrentUser=(req,res)=>{
+        
+        const user=req.user
+        // console.log(user)
+        return res.status(200).json({
+            message:'current user data',
+            user
+        })
+ 
+}
+module.exports={registeruser,loginuser,getCurrentUser}
